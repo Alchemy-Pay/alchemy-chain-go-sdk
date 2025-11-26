@@ -5,7 +5,7 @@ Alchemy Chain Go SDK - A simplified token API toolkit for blockchain token opera
 ## Installation
 
 ```bash
-go get github.com/alchemy-chain/go-sdk
+go get github.com/Alchemy-Pay/alchemy-chain-go-sdk
 ```
 
 ## Quick Start
