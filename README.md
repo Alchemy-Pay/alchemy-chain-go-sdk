@@ -15,7 +15,7 @@ package main
 
 import (
     "fmt"
-    alchemy "github.com/alchemy-chain/go-sdk"
+    alchemy "github.com/Alchemy-Pay/alchemy-chain-go-sdk"
 )
 
 func main() {
@@ -191,7 +191,7 @@ package main
 import (
     "crypto/ecdsa"
     "fmt"
-    alchemy "github.com/alchemy-chain/go-sdk"
+    alchemy "github.com/Alchemy-Pay/alchemy-chain-go-sdk"
     "github.com/ethereum/go-ethereum/crypto"
 )
 

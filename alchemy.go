@@ -74,18 +74,32 @@ type Signature struct {
 
 // buildSortedMessage creates message string sorted by keys a-z (consistent with server side)
 func buildSortedMessage(params map[string]interface{}) string {
-	// Get all keys and sort them
 	keys := make([]string, 0, len(params))
 	for key := range params {
 		keys = append(keys, key)
 	}
-	sort.Strings(keys) // a-z sort
+	sort.Strings(keys) // a-z
 
-	// Build message string using sorted keys
 	var messageParts []string
 	for _, key := range keys {
 		value := params[key]
-		messageParts = append(messageParts, fmt.Sprintf("%v", value))
+
+		if value == nil {
+			continue
+		}
+
+		if slice, ok := value.([]interface{}); ok {
+			if len(slice) > 0 {
+				for _, element := range slice {
+					if element != nil {
+						messageParts = append(messageParts, fmt.Sprintf("%v", element))
+					}
+				}
+			}
+		} else {
+			formattedValue := fmt.Sprintf("%v", value)
+			messageParts = append(messageParts, formattedValue)
+		}
 	}
 
 	return strings.Join(messageParts, ",")
@@ -154,12 +168,12 @@ func CreateToken(name, symbol string, decimals int32, masterAuthority string) *R
 	}
 
 	reqParams := map[string]interface{}{
-		"decimals":          decimals,
-		"master_authority":  masterAuthority,
-		"name":              name,
-		"symbol":            symbol,
-		"nonce":             nonce,
-		"recent_checkpoint": blockNum,
+		"decimals":         decimals,
+		"masterAuthority":  masterAuthority,
+		"name":             name,
+		"symbol":           symbol,
+		"nonce":            nonce,
+		"recentCheckpoint": blockNum,
 		"signature": map[string]string{
 			"r": signature.R,
 			"s": signature.S,
@@ -289,10 +303,11 @@ func dynamicCallWithType[T any](tokenAddress, methodName string, methodArgs []in
 		return &ResponseHandler[T]{err: err}
 	}
 
-	// Build parameter mapping with consistent key names and sorting as server side（methodName不参与签名）
+	// Build parameter mapping with consistent key names and sorting as server side (methodName doesn't participate in signature)
 	params := map[string]interface{}{
-		"recentCheckpoint": blockNum,
+		"methodArgs":       methodArgs,
 		"nonce":            nonce,
+		"recentCheckpoint": blockNum,
 		"token":            tokenAddress,
 	}
 
@@ -302,10 +317,10 @@ func dynamicCallWithType[T any](tokenAddress, methodName string, methodArgs []in
 	}
 
 	reqParams := map[string]interface{}{
-		"nonce":             nonce,
-		"token":             tokenAddress,
-		"methodArgs":        methodArgs,
-		"recent_checkpoint": blockNum,
+		"nonce":            nonce,
+		"token":            tokenAddress,
+		"methodArgs":       methodArgs,
+		"recentCheckpoint": blockNum,
 		"signature": map[string]string{
 			"r": signature.R,
 			"s": signature.S,

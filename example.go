@@ -46,7 +46,7 @@ func main() {
 		})
 
 	// 1. Create token first (this is the only way to get token address)
-	alchemy.CreateToken("My Token", "MTK", 8, "0xa6459EF31C68DCF46cC603C526526DB1C6eE4fD1").
+	alchemy.CreateToken("My Token", "MTK", 8, "0x1234567890123456789012345678901234567890").
 		Success(func(response *alchemy.TokenIssueResult) {
 			fmt.Printf("✅ Token created successfully!\n")
 			fmt.Printf("📋 Token address: %s\n", response.Token)
