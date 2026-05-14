@@ -50,7 +50,7 @@ func printGasUsed(op string, before, after *big.Int) {
 }
 
 func main() {
-	privateKeyHex := "0x..."
+	privateKeyHex := ".."
 
 	// 初始化 SDK（第三个参数可选，覆盖默认 chain ID 202512）
 	alchemy.Config("http://localhost:8545", privateKeyHex)
