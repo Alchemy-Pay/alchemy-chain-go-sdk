@@ -19,7 +19,7 @@ import (
 var (
 	baseURL    = "http://localhost:8545"
 	privateKey = ""
-	chainID    = int64(2025) // ACH Chain ID
+	chainID    = int64(202512) // ACH Chain ID
 	client     = &http.Client{Timeout: 30 * time.Second}
 )
 
